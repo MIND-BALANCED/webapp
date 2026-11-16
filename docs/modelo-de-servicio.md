@@ -2,6 +2,8 @@
 
 Centro virtual de atención psicológica para jóvenes y adultos. Este documento recoge las decisiones de diseño y lo que falta por definir. Es la guía para construir la plataforma.
 
+El modelo clínico del centro está en [`macpi.md`](macpi.md): **Modelo de Atención Clínico-Psicosocial Integrado (MACPI)**. Su principio rector es *comprender a la persona en su contexto, intervenir con rigor científico y acompañar con sensibilidad humana*.
+
 ## 1. Decisiones tomadas
 
 | Decisión | Elección |
@@ -10,6 +12,7 @@ Centro virtual de atención psicológica para jóvenes y adultos. Este documento
 | Videollamadas | Proveedor externo: Google Meet, Zoom o Microsoft Teams. La plataforma no transmite video. |
 | Agenda | Proveedor externo: Cal.com, Calendly o similar, integrado por enlace o iframe (`NEXT_PUBLIC_SCHEDULING_URL`). |
 | Alcance de la plataforma | Recorrido de la persona usuaria, admisión, tamizaje de riesgo, consentimientos, gestión de casos y (más adelante) historia clínica. |
+| Modelo clínico | **MACPI** (borrador v1.0): contextual, pluralista y orientado por evidencia. Seis fases y tres niveles de intervención. Ver [`macpi.md`](macpi.md). |
 | Publicación actual | Demostración estática en GitHub Pages, con datos ficticios en el navegador. Sin base de datos conectada. |
 
 ## 2. Líneas de atención
@@ -34,6 +37,19 @@ Centro virtual de atención psicológica para jóvenes y adultos. Este documento
 | 04 Plan de acompañamiento | Panel: asignación de profesional, estados y notas en la bitácora |
 | 05 Atención y seguimiento | Videollamada externa y citas en la ficha. *Fase 3: notas de sesión e instrumentos de seguimiento* |
 | 06 Cierre o remisión | Panel: estados `remitida` y `cerrada` |
+
+### Correspondencia con las fases del MACPI
+
+| Fase MACPI | Soporte actual | Pendiente en la plataforma |
+|---|---|---|
+| 01 Acogida y admisión | Formulario, tamizaje, consentimientos y prioridad | Verificar la **ubicación** durante la atención y registrar un **contacto de emergencia** (MACPI §8) |
+| 02 Evaluación clínica y psicosocial | Notas en la bitácora | Entrevista inicial estructurada e instrumentos (PHQ-9, GAD-7, WHODAS 2.0) |
+| 03 Formulación compartida | — | **Ficha de formulación MACPI** de 8 campos, que separe hechos, observaciones, hipótesis y decisiones (MACPI §6) |
+| 04 Intervención individualizada | Asignación de profesional | Plan de intervención: nivel (I, II o III), ruta según la matriz de decisión (MACPI §5) y estrategias |
+| 05 Seguimiento y ajuste | Citas y bitácora | Medidas de resultados, logro de objetivos y alianza terapéutica (MACPI §9) |
+| 06 Cierre y continuidad | Estados `cerrada` y `remitida` | Plan de mantenimiento, señales de alerta y remisión documentada |
+
+> La matriz de decisión del MACPI orienta las rutas, pero **la decisión nunca depende solo del formulario**: la prioridad automática es un filtro de enrutamiento y siempre la revisa un profesional.
 
 ## 5. Tamizaje de seguridad (en la admisión)
 
@@ -95,7 +111,7 @@ Tres preguntas: ideación en las últimas dos semanas, plan o intención actual,
 ## 9. Decisiones pendientes
 
 1. ¿Se atenderá a menores de 18 años?
-2. Enfoque o modelo terapéutico principal (integrador, cognitivo-conductual, sistémico, etc.).
+2. ~~Enfoque o modelo terapéutico principal~~ → resuelto en principio con el MACPI (borrador v1.0); falta su validación profesional.
 3. Tarifas y medios de pago (por ejemplo Wompi, Mercado Pago o el cobro integrado de Cal.com).
 4. Forma jurídica del centro (persona natural o jurídica, habilitación como prestador).
 5. Horarios y tiempos de respuesta comprometidos.
