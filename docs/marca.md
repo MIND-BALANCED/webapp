@@ -28,6 +28,7 @@ Los tokens están en `src/app/globals.css`. Úsalos siempre a través de las cla
 | Texto secundario | `muted` | `#57537A` | `#B3AED0` | Descripciones y metadatos. |
 | Borde de control | `border-strong` | `#8A83B0` | `#756F9C` | Bordes de inputs, selects y checkboxes (≥ 3:1). |
 | Borde decorativo | `border` | `#DDD7F0` | `#39345E` | Separadores y contornos de tarjetas (no cumple 3:1; no usar para controles). |
+| Navegación lateral | `sidebar` / `sidebar-foreground` | `#4C3A99` / `#FFFFFF` | `#2A2352` / `#EEECF8` | Barra lateral de la plataforma (8.9:1 y 12.3:1). En oscuro es violeta profundo, no lavanda claro, para no deslumbrar. |
 | Peligro | `danger` / `danger-soft` | `#B3261E` / `#FCEBEA` | `#F2A49C` / `#3B1F25` | Riesgo, crisis y errores. **Reservado**: no se usa como decoración. |
 
 ### Contraste verificado (WCAG 2.1)

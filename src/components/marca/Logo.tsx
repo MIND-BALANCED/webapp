@@ -26,7 +26,7 @@ export function Logo({ compact = false, inverse = false }: { compact?: boolean; 
     <span className="flex items-center gap-2.5">
       <LogoMark className={compact ? "size-9" : "size-11"} />
       <span className="flex flex-col leading-none">
-        <span className={`font-display text-lg font-bold tracking-tight ${inverse ? "text-white" : "text-primary"}`}>
+        <span className={`whitespace-nowrap font-display text-lg font-bold tracking-tight ${inverse ? "text-white" : "text-primary"}`}>
           {site.name}
         </span>
         {!compact && (
