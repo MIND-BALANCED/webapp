@@ -1,10 +1,10 @@
 import type { Metadata } from "next";
-import { Inter, Fraunces } from "next/font/google";
+import { Inter, Montserrat } from "next/font/google";
 import "./globals.css";
 import { site } from "@/lib/site";
 
-const sans = Inter({ variable: "--font-sans-base", subsets: ["latin"] });
-const serif = Fraunces({ variable: "--font-serif-base", subsets: ["latin"] });
+const inter = Inter({ variable: "--font-inter", subsets: ["latin"] });
+const montserrat = Montserrat({ variable: "--font-montserrat", subsets: ["latin"], weight: ["500", "600", "700"] });
 
 export const metadata: Metadata = {
   title: { default: `${site.name} · ${site.tagline}`, template: `%s · ${site.name}` },
@@ -13,7 +13,7 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
-    <html lang="es" className={`${sans.variable} ${serif.variable} h-full antialiased`}>
+    <html lang="es" className={`${inter.variable} ${montserrat.variable} h-full antialiased`}>
       <body className="min-h-full flex flex-col font-sans">{children}</body>
     </html>
   );

@@ -1,3 +1,5 @@
+import { Brain, HandHeart, Heart, MessageCircle, ShieldCheck, Sprout, Star, User, Users, type LucideIcon } from "lucide-react";
+
 export type LineaId = "orientacion" | "psicoterapia" | "prevencion" | "psicosocial";
 
 export type Linea = {
@@ -8,11 +10,13 @@ export type Linea = {
   paraQuien: string;
   formato: string;
   incluye: string[];
+  icono: LucideIcon;
 };
 
 export const lineas: Linea[] = [
   {
     id: "orientacion",
+    icono: MessageCircle,
     numero: "01",
     titulo: "Orientación psicológica",
     resumen:
@@ -29,6 +33,7 @@ export const lineas: Linea[] = [
   },
   {
     id: "psicoterapia",
+    icono: Brain,
     numero: "02",
     titulo: "Atención psicológica individual",
     resumen:
@@ -45,6 +50,7 @@ export const lineas: Linea[] = [
   },
   {
     id: "prevencion",
+    icono: Sprout,
     numero: "03",
     titulo: "Promoción y prevención",
     resumen:
@@ -60,6 +66,7 @@ export const lineas: Linea[] = [
   },
   {
     id: "psicosocial",
+    icono: Users,
     numero: "04",
     titulo: "Acompañamiento psicosocial",
     resumen:
@@ -83,3 +90,18 @@ export const recorrido = [
   { paso: "05", titulo: "Atención y seguimiento", texto: "Te reúnes por videollamada y evaluamos juntos los avances." },
   { paso: "06", titulo: "Cierre o remisión", texto: "Valoramos los resultados y definimos próximos pasos." },
 ];
+
+export const valores: { titulo: string; texto: string; icono: LucideIcon }[] = [
+  { titulo: "Respeto", texto: "Valoramos la diversidad y la individualidad.", icono: HandHeart },
+  { titulo: "Confidencialidad", texto: "Protegemos tu información y tu proceso.", icono: ShieldCheck },
+  { titulo: "Ética", texto: "Actuamos con responsabilidad y transparencia.", icono: Heart },
+  { titulo: "Evidencia", texto: "Tomamos decisiones basadas en la mejor evidencia científica.", icono: Star },
+  { titulo: "Accesibilidad", texto: "Estamos aquí, sin barreras.", icono: Users },
+];
+
+/** Las tres miradas del modelo MACPI (docs/macpi.md), en lenguaje para el público. */
+export const miradasModelo = [
+  { id: "clinico", titulo: "Clínico", texto: "Procesos psicológicos y salud mental.", icono: Brain },
+  { id: "psicosocial", titulo: "Psicosocial", texto: "Contexto, relaciones y entorno.", icono: Users },
+  { id: "persona", titulo: "Persona", texto: "Valores, fortalezas y proyecto de vida.", icono: User },
+] as const;

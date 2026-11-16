@@ -5,7 +5,10 @@
  */
 export const site = {
   name: "Mind Balanced",
+  descriptor: "Centro Virtual de Atención Psicológica",
   tagline: "Centro virtual de atención psicológica",
+  lema: "Tu bienestar también es una prioridad",
+  principio: "Comprender a la persona en su contexto, intervenir con rigor científico y acompañar con sensibilidad humana.",
   description:
     "Orientación, atención psicológica y acompañamiento psicosocial virtual para jóvenes y adultos. Un espacio profesional, confidencial y cercano.",
   contactEmail: process.env.NEXT_PUBLIC_CONTACT_EMAIL ?? "",

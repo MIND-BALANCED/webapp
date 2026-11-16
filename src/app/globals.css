@@ -1,37 +1,61 @@
 @import "tailwindcss";
 
+/*
+ * Sistema de marca Mind Balanced (ver docs/marca.md).
+ * Todos los pares de texto cumplen WCAG AA (la mayoría AAA) en claro y oscuro.
+ * --secondary y --accent son DECORATIVOS: no usarlos para texto ni para
+ * bordes de controles. Para texto verde usar --accent-ink.
+ */
 :root {
-  --background: #faf8f5;
+  --background: #fcfbff;
   --surface: #ffffff;
-  --surface-muted: #f1eee9;
-  --foreground: #1f2430;
-  --muted: #5b6170;
-  --border: #e3dfd8;
-  --primary: #5b4b8a;
+  --surface-muted: #f3f0fb;
+  --foreground: #1f1b3d;
+  --muted: #57537a;
+  --border: #ddd7f0;
+  --border-strong: #8a83b0; /* bordes de controles: ≥3:1 */
+
+  --primary: #4c3a99;
+  --primary-hover: #3d2e80;
   --primary-foreground: #ffffff;
-  --primary-soft: #ece8f6;
-  --accent: #2f7d6d;
-  --accent-soft: #e2f1ec;
-  --danger: #a3352b;
-  --danger-soft: #fbeae7;
-  --warning-soft: #fdf3dc;
+  --primary-soft: #ece7fa;
+
+  --secondary: #b7a6e6; /* lavanda: decorativo */
+  --secondary-soft: #f3f0fb;
+
+  --accent: #4fa88b; /* verde: decorativo */
+  --accent-ink: #23705a; /* verde para texto */
+  --accent-soft: #e3f3ec;
+
+  --danger: #b3261e;
+  --danger-soft: #fcebea;
+  --warning-soft: #fff3d6;
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #14161c;
-    --surface: #1c1f27;
-    --surface-muted: #232733;
-    --foreground: #eceef3;
-    --muted: #a3a9b8;
-    --border: #2f3442;
-    --primary: #b3a4e6;
-    --primary-foreground: #1a1530;
-    --primary-soft: #2a2442;
-    --accent: #7ccbb8;
-    --accent-soft: #1e3530;
-    --danger: #f19a8f;
-    --danger-soft: #3a201d;
+    --background: #14122a;
+    --surface: #1d1a36;
+    --surface-muted: #262249;
+    --foreground: #eeecf8;
+    --muted: #b3aed0;
+    --border: #39345e;
+    --border-strong: #756f9c;
+
+    --primary: #bba9f2;
+    --primary-hover: #cdbff6;
+    --primary-foreground: #1a1533;
+    --primary-soft: #2e2758;
+
+    --secondary: #6f5fb8;
+    --secondary-soft: #231f45;
+
+    --accent: #4fa88b;
+    --accent-ink: #82d3b7;
+    --accent-soft: #183a31;
+
+    --danger: #f2a49c;
+    --danger-soft: #3b1f25;
     --warning-soft: #3a3020;
   }
 }
@@ -43,16 +67,21 @@
   --color-foreground: var(--foreground);
   --color-muted: var(--muted);
   --color-border: var(--border);
+  --color-border-strong: var(--border-strong);
   --color-primary: var(--primary);
+  --color-primary-hover: var(--primary-hover);
   --color-primary-foreground: var(--primary-foreground);
   --color-primary-soft: var(--primary-soft);
+  --color-secondary: var(--secondary);
+  --color-secondary-soft: var(--secondary-soft);
   --color-accent: var(--accent);
+  --color-accent-ink: var(--accent-ink);
   --color-accent-soft: var(--accent-soft);
   --color-danger: var(--danger);
   --color-danger-soft: var(--danger-soft);
   --color-warning-soft: var(--warning-soft);
-  --font-sans: var(--font-sans-base);
-  --font-serif: var(--font-serif-base);
+  --font-sans: var(--font-inter);
+  --font-display: var(--font-montserrat);
 }
 
 body {
@@ -61,6 +90,17 @@ body {
 }
 
 :focus-visible {
-  outline: 2px solid var(--primary);
+  outline: 3px solid var(--primary);
   outline-offset: 2px;
+  border-radius: 4px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
 }
