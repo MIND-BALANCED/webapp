@@ -97,10 +97,16 @@ body {
   color: var(--foreground);
 }
 
-:focus-visible {
-  outline: 3px solid var(--primary);
-  outline-offset: 2px;
-  border-radius: 4px;
+/*
+ * Foco visible global. Va dentro de @layer base para que las utilidades de
+ * Tailwind (p. ej. focus-visible:outline-sidebar-foreground en la barra
+ * lateral) puedan cambiar el color del contorno donde el fondo es violeta.
+ */
+@layer base {
+  :focus-visible {
+    outline: 3px solid var(--primary);
+    outline-offset: 2px;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
