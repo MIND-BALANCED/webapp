@@ -4,18 +4,7 @@ import { LogoMark } from "@/components/marca/Logo";
 import { Blob, IconoCirculo, Rama } from "@/components/marca/Decor";
 import { lineas, miradasModelo, valores } from "@/lib/servicios";
 import { site } from "@/lib/site";
-
-const tarjeta =
-  "rounded-3xl bg-surface ring-1 ring-border shadow-[0_1px_2px_rgb(0_0_0/0.04),0_8px_24px_-12px_rgb(76_58_153/0.18)]";
-
-const botonPrincipal =
-  "inline-flex min-h-11 items-center justify-center gap-2 rounded-full bg-primary px-6 py-3 font-display font-semibold text-primary-foreground shadow-sm transition-colors hover:bg-primary-hover";
-
-const botonSecundario =
-  "inline-flex min-h-11 items-center justify-center gap-2 rounded-full bg-surface px-6 py-3 font-display font-semibold text-primary ring-1 ring-border-strong transition-colors hover:bg-primary-soft";
-
-const enlaceTexto =
-  "inline-flex min-h-11 items-center gap-1.5 font-semibold text-primary underline-offset-4 hover:underline";
+import { botonPrimario, botonSecundario, enlaceFlecha, tarjeta } from "@/components/marca/estilos";
 
 const pasos = [
   {
@@ -134,7 +123,7 @@ export default function Home() {
               integrado que tiene en cuenta lo que vives, tu historia y tu contexto.
             </p>
             <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
-              <Link href="/solicitar/" className={botonPrincipal}>
+              <Link href="/solicitar/" className={botonPrimario}>
                 Solicitar atención
                 <ArrowRight aria-hidden className="size-4" strokeWidth={2} />
               </Link>
@@ -166,7 +155,7 @@ export default function Home() {
                 <IconoCirculo icon={l.icono} tone={i % 2 === 0 ? "primary" : "accent"} />
                 <h3 className="mt-5 font-display text-lg font-semibold leading-snug text-foreground">{l.titulo}</h3>
                 <p className="mt-2 flex-1 text-sm leading-relaxed text-muted">{l.resumen}</p>
-                <Link href={`/servicios/#${l.id}`} className={`${enlaceTexto} mt-4 self-start`}>
+                <Link href={`/servicios/#${l.id}`} className={`${enlaceFlecha} mt-4 self-start`}>
                   Ver más<span className="sr-only"> sobre {l.titulo.toLowerCase()}</span>
                   <ArrowRight aria-hidden className="size-4" strokeWidth={2} />
                 </Link>
@@ -201,7 +190,7 @@ export default function Home() {
                 </li>
               ))}
             </ul>
-            <Link href="/modelo/" className={`${enlaceTexto} mt-4`}>
+            <Link href="/modelo/" className={`${enlaceFlecha} mt-4`}>
               Conoce el modelo
               <ArrowRight aria-hidden className="size-4" strokeWidth={2} />
             </Link>
@@ -241,7 +230,7 @@ export default function Home() {
                 </li>
               ))}
             </ol>
-            <Link href="/como-funciona/" className={`${enlaceTexto} mt-4`}>
+            <Link href="/como-funciona/" className={`${enlaceFlecha} mt-4`}>
               Ver el recorrido completo
               <ArrowRight aria-hidden className="size-4" strokeWidth={2} />
             </Link>
@@ -261,7 +250,7 @@ export default function Home() {
                 Nos encontramos por videollamada, desde un lugar donde te sientas con tranquilidad. Tu información se
                 trata con confidencialidad y con tu consentimiento informado.
               </p>
-              <Link href="/solicitar/" className={`${botonPrincipal} mt-6`}>
+              <Link href="/solicitar/" className={`${botonPrimario} mt-6`}>
                 Solicitar atención
                 <ArrowRight aria-hidden className="size-4" strokeWidth={2} />
               </Link>

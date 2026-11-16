@@ -49,7 +49,8 @@ create table public.solicitud_eventos (
   created_at timestamptz not null default now(),
   solicitud_id uuid not null references public.solicitudes (id) on delete cascade,
   autor uuid references public.profesionales (id) on delete set null, -- null = sistema
-  tipo text not null check (tipo in ('creada', 'estado', 'asignacion', 'nota', 'cita')),
+  -- 'contacto': contacto de crisis registrado por el equipo (resultado y valoración del riesgo).
+  tipo text not null check (tipo in ('creada', 'estado', 'asignacion', 'nota', 'cita', 'contacto')),
   detalle text check (char_length(detalle) <= 4000)
 );
 
@@ -166,12 +167,13 @@ create policy "equipo ve eventos de solicitudes visibles" on public.solicitud_ev
     and exists (select 1 from public.solicitudes s where s.id = solicitud_id)
   );
 
-create policy "equipo agrega notas propias" on public.solicitud_eventos
+-- El equipo solo inserta notas y contactos de crisis a su nombre; el resto lo escribe la bitácora automática.
+create policy "equipo agrega notas y contactos propios" on public.solicitud_eventos
   for insert to authenticated
   with check (
     public.sesion_con_2fa()
     and public.mi_rol() is not null
-    and tipo = 'nota'
+    and tipo in ('nota', 'contacto')
     and autor = auth.uid()
     and exists (select 1 from public.solicitudes s where s.id = solicitud_id)
   );

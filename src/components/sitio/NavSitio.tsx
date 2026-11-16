@@ -4,6 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { ArrowRight, LifeBuoy, Menu, X } from "lucide-react";
+import { botonPrimario } from "@/components/marca/estilos";
 
 const nav = [
   { href: "/servicios/", label: "Servicios" },
@@ -28,16 +29,20 @@ function esActual(pathname: string, href: string) {
  */
 export function NavSitio() {
   const pathname = usePathname() ?? "/";
-  // El menú queda abierto solo en la ruta donde se abrió: al navegar se cierra solo.
-  const [abiertoEn, setAbiertoEn] = useState<string | null>(null);
-  const abierto = abiertoEn === pathname;
+  const [abierto, setAbierto] = useState(false);
+  // Cierra el menú en cada cambio de ruta (estado derivado de la ruta previa, sin efectos).
+  const [rutaPrevia, setRutaPrevia] = useState(pathname);
+  if (rutaPrevia !== pathname) {
+    setRutaPrevia(pathname);
+    setAbierto(false);
+  }
   const botonRef = useRef<HTMLButtonElement>(null);
 
   useEffect(() => {
     if (!abierto) return;
     function onKey(e: KeyboardEvent) {
       if (e.key === "Escape") {
-        setAbiertoEn(null);
+        setAbierto(false);
         botonRef.current?.focus();
       }
     }
@@ -45,7 +50,7 @@ export function NavSitio() {
     return () => document.removeEventListener("keydown", onKey);
   }, [abierto]);
 
-  const cerrar = () => setAbiertoEn(null);
+  const cerrar = () => setAbierto(false);
   const solicitarActual = esActual(pathname, "/solicitar/");
 
   return (
@@ -89,7 +94,7 @@ export function NavSitio() {
         type="button"
         aria-expanded={abierto}
         aria-controls="menu-movil"
-        onClick={() => setAbiertoEn(abierto ? null : pathname)}
+        onClick={() => setAbierto((a) => !a)}
         className="inline-flex min-h-11 min-w-11 items-center justify-center gap-2 rounded-full px-3 font-medium text-primary ring-1 ring-border-strong hover:bg-surface-muted lg:hidden"
       >
         {abierto ? (
@@ -103,7 +108,7 @@ export function NavSitio() {
       <div
         id="menu-movil"
         hidden={!abierto}
-        className="absolute inset-x-0 top-full z-40 border-b border-border bg-surface shadow-[0_1px_2px_rgb(0_0_0/0.04),0_8px_24px_-12px_rgb(76_58_153/0.18)] lg:hidden"
+        className="absolute inset-x-0 top-full z-40 border-b border-border bg-surface shadow-card lg:hidden"
       >
         <nav aria-label="Principal (móvil)" className="mx-auto max-w-6xl px-4 py-4">
           <ul className="flex flex-col gap-1">
@@ -134,7 +139,7 @@ export function NavSitio() {
             href="/solicitar/"
             onClick={cerrar}
             aria-current={solicitarActual ? "page" : undefined}
-            className="mt-3 flex min-h-12 items-center justify-center gap-2 rounded-full bg-primary px-5 font-display font-semibold text-primary-foreground hover:bg-primary-hover"
+            className={`${botonPrimario} mt-3 w-full`}
           >
             Solicitar atención
             <ArrowRight aria-hidden className="size-4" strokeWidth={2} />

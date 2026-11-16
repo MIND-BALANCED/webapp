@@ -40,7 +40,8 @@ export type Cita = {
   enlace: string | null;
 };
 
-export type TipoEvento = "creada" | "estado" | "asignacion" | "nota" | "cita";
+/** "contacto": primer contacto del protocolo de crisis (resultado y valoración del riesgo). */
+export type TipoEvento = "creada" | "estado" | "asignacion" | "nota" | "cita" | "contacto";
 
 export type Evento = {
   id: string;

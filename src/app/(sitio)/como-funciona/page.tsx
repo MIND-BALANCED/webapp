@@ -3,11 +3,9 @@ import Link from "next/link";
 import { ArrowRight, Headphones, Heart, Laptop, Lock, Phone, type LucideIcon } from "lucide-react";
 import { Blob, IconoCirculo, Rama } from "@/components/marca/Decor";
 import { recorrido } from "@/lib/servicios";
+import { botonPrimario, tarjeta } from "@/components/marca/estilos";
 
 export const metadata: Metadata = { title: "Cómo funciona" };
-
-const tarjeta =
-  "rounded-3xl bg-surface ring-1 ring-border shadow-[0_1px_2px_rgb(0_0_0/0.04),0_8px_24px_-12px_rgb(76_58_153/0.18)]";
 
 const requisitos: { titulo: string; texto: string; icono: LucideIcon; tono: "primary" | "accent" }[] = [
   { titulo: "Un espacio privado", texto: "Donde puedas hablar con tranquilidad y sin interrupciones.", icono: Lock, tono: "primary" },
@@ -108,7 +106,7 @@ export default function ComoFunciona() {
         <div className="mt-10">
           <Link
             href="/solicitar/"
-            className="inline-flex min-h-11 items-center justify-center gap-2 rounded-full bg-primary px-6 py-3 font-medium text-primary-foreground hover:bg-primary-hover"
+            className={botonPrimario}
           >
             Empezar mi solicitud
             <ArrowRight aria-hidden className="size-5" strokeWidth={1.75} />

@@ -59,6 +59,9 @@ Tres preguntas: ideación en las últimas dos semanas, plan o intención actual,
 - **Prioritaria** (hay ideación, o la persona prefirió no responder): contacto en menos de 24 horas hábiles. Se ofrecen la agenda y las líneas de ayuda.
 - **Regular**: flujo normal, con contacto en 2 días hábiles.
 
+- **Si hay riesgo, la ayuda aparece siempre:** si la persona marca plan o intención, o violencia, ve las líneas de ayuda inmediata **aunque el formulario tenga errores**. Si es menor de 18 años, ve un mensaje de no admisión con las líneas de ayuda y la Línea 141 del ICBF.
+- **En el panel**, una solicitud urgente sigue marcada "sin atender", con el protocolo de crisis a la vista, **hasta que alguien registre un contacto de crisis** (evento `contacto` en la bitácora: resultado del contacto y valoración del riesgo). Asignarse el caso o cambiar su estado no basta.
+
 > Es un filtro de enrutamiento y **no reemplaza la valoración clínica del riesgo**. El protocolo de crisis (pendiente) debe definir quién revisa las solicitudes urgentes, en cuánto tiempo y cómo se documenta.
 
 ## 6. Protocolos por redactar

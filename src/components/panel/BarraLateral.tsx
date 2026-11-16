@@ -3,7 +3,7 @@
 import type { LucideIcon } from "lucide-react";
 import { Globe, Heart, Inbox, LifeBuoy, LogOut, Menu, X } from "lucide-react";
 import Link from "next/link";
-import { useId, useState } from "react";
+import { useEffect, useId, useRef, useState } from "react";
 import { LogoMark } from "@/components/marca/Logo";
 import type { Profesional } from "@/lib/panel/tipos";
 import { site } from "@/lib/site";
@@ -115,8 +115,25 @@ const lema = "Comprender • Intervenir • Acompañar";
 
 /** Barra lateral en escritorio; encabezado con menú desplegable en móvil. */
 export function BarraLateral({ yo, pathname, onSalir }: { yo: Profesional; pathname: string; onSalir: () => void }) {
-  const [abierto, setAbierto] = useState(false);
+  // El menú queda abierto solo en la ruta donde se abrió: al navegar (por
+  // cualquier enlace, también los de fuera del menú) se cierra solo.
+  const [abiertoEn, setAbiertoEn] = useState<string | null>(null);
+  const abierto = abiertoEn === pathname;
+  const cerrar = () => setAbiertoEn(null);
   const idMenu = useId();
+  const botonRef = useRef<HTMLButtonElement>(null);
+
+  useEffect(() => {
+    if (!abierto) return;
+    function onKey(e: KeyboardEvent) {
+      if (e.key === "Escape") {
+        setAbiertoEn(null);
+        botonRef.current?.focus();
+      }
+    }
+    document.addEventListener("keydown", onKey);
+    return () => document.removeEventListener("keydown", onKey);
+  }, [abierto]);
 
   return (
     <>
@@ -138,20 +155,16 @@ export function BarraLateral({ yo, pathname, onSalir }: { yo: Profesional; pathn
       </aside>
 
       {/* Móvil */}
-      <header
-        className="bg-sidebar lg:hidden"
-        onKeyDown={(e) => {
-          if (e.key === "Escape" && abierto) setAbierto(false);
-        }}
-      >
+      <header className="bg-sidebar lg:hidden">
         <div className="flex items-center justify-between gap-3 px-4 py-3">
           <Marca />
           <span className={focoInverso}>
             <button
+              ref={botonRef}
               type="button"
               aria-expanded={abierto}
               aria-controls={idMenu}
-              onClick={() => setAbierto((v) => !v)}
+              onClick={() => setAbiertoEn(abierto ? null : pathname)}
               className="inline-flex min-h-11 items-center gap-2 rounded-full px-4 text-sm font-medium text-sidebar-foreground ring-1 ring-inset ring-sidebar-foreground/60 hover:bg-sidebar-foreground/15"
             >
               {abierto ? (
@@ -165,7 +178,7 @@ export function BarraLateral({ yo, pathname, onSalir }: { yo: Profesional; pathn
         </div>
         <div id={idMenu} hidden={!abierto} className={`space-y-5 px-4 pb-5 ${focoInverso}`}>
           <p className="text-sm font-medium text-sidebar-foreground/90">{lema}</p>
-          <Navegacion pathname={pathname} alNavegar={() => setAbierto(false)} />
+          <Navegacion pathname={pathname} alNavegar={cerrar} />
           <Usuario yo={yo} onSalir={onSalir} />
           <Autocuidado />
         </div>

@@ -5,7 +5,7 @@ import { CalendarCheck, ChevronRight, CircleDashed, Clock, Hourglass, Inbox, Inf
 import Link from "next/link";
 import { useRef, useState } from "react";
 import { EstadoBadge, hace, lineaLabel, PrioridadBadge, tarjeta } from "@/components/panel/ui";
-import { useDemoDB, usuarioActual } from "@/lib/demo/store";
+import { urgenteSinAtender, useDemoDB, usuarioActual } from "@/lib/demo/store";
 import { ordenarBandeja, puedeVer } from "@/lib/panel/permisos";
 import type { Solicitud } from "@/lib/panel/tipos";
 
@@ -33,7 +33,9 @@ export default function Bandeja() {
   const lista = visibles.filter(filtros[vista].fn).sort(ordenarBandeja);
   const nombre = (id: string | null) => db.profesionales.find((p) => p.id === id)?.nombre ?? null;
 
-  const urgentesPendientes = visibles.filter((s) => s.prioridad === "urgente" && s.estado === "nueva");
+  // Sin atender = urgente sin contacto de crisis registrado en la bitácora (el estado no cuenta).
+  const sinAtender = (s: Solicitud) => urgenteSinAtender(db, s);
+  const urgentesPendientes = visibles.filter(sinAtender);
   const resumen: { label: string; valor: number; icono: LucideIcon; destacar?: boolean; tono?: "accent" }[] = [
     { label: "Urgentes sin atender", valor: urgentesPendientes.length, icono: TriangleAlert, destacar: urgentesPendientes.length > 0 },
     { label: "Nuevas", valor: visibles.filter((s) => s.estado === "nueva").length, icono: CircleDashed },
@@ -78,7 +80,8 @@ export default function Bandeja() {
                 : `Hay ${urgentesPendientes.length} solicitudes urgentes sin atender.`}
             </p>
             <p className="mt-1 text-sm leading-relaxed">
-              Según el protocolo de crisis, contacta a la persona lo antes posible y documenta la gestión.
+              Según el protocolo de crisis, contacta a la persona lo antes posible y registra el contacto de crisis en
+              su ficha.
             </p>
           </div>
         </div>
@@ -167,13 +170,13 @@ export default function Bandeja() {
         ) : (
           <ul className="space-y-3">
             {lista.map((s) => {
-              const urgentePendiente = s.prioridad === "urgente" && s.estado === "nueva";
+              const urgentePendiente = sinAtender(s);
               const asignado = nombre(s.profesionalAsignado);
               return (
                 <li key={s.id}>
                   <Link
                     href={`/panel/solicitud/?id=${s.id}`}
-                    className={`group grid gap-3 p-4 hover:bg-primary-soft sm:p-5 md:grid-cols-[7.5rem_1fr_10rem_9rem_auto] md:items-center rounded-3xl bg-surface shadow-[0_1px_2px_rgb(0_0_0/0.04),0_8px_24px_-12px_rgb(76_58_153/0.18)] ${
+                    className={`group grid gap-3 p-4 hover:bg-primary-soft sm:p-5 md:grid-cols-[7.5rem_1fr_10rem_9rem_auto] md:items-center rounded-3xl bg-surface shadow-card ${
                       urgentePendiente ? "ring-2 ring-danger" : "ring-1 ring-border hover:ring-border-strong"
                     }`}
                   >
@@ -185,6 +188,12 @@ export default function Bandeja() {
                       <span className="mt-0.5 block text-sm text-muted">
                         {lineaLabel(s.linea)} · {s.edad} años · {s.ciudad}
                       </span>
+                      {urgentePendiente && (
+                        <span className="mt-1 flex items-center gap-1.5 text-sm font-semibold text-danger">
+                          <TriangleAlert aria-hidden className="size-4 shrink-0" strokeWidth={1.75} />
+                          Sin contacto de crisis
+                        </span>
+                      )}
                     </span>
                     <span className="flex items-center gap-1.5 text-sm text-muted">
                       <UserRound aria-hidden className="size-4 shrink-0" strokeWidth={1.75} />

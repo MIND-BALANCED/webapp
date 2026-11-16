@@ -4,21 +4,10 @@ import type { Prioridad } from "@/lib/admision";
 import { estadoLabel, type EstadoSolicitud } from "@/lib/panel/tipos";
 import { lineas } from "@/lib/servicios";
 
-/** Tarjeta de marca: blanca, muy redondeada y con sombra sutil. */
-export const tarjeta =
-  "rounded-3xl bg-surface ring-1 ring-border shadow-[0_1px_2px_rgb(0_0_0/0.04),0_8px_24px_-12px_rgb(76_58_153/0.18)]";
+import { tarjeta } from "@/components/marca/estilos";
 
-/** Bordes de controles de formulario (≥3:1 en claro y oscuro). */
-export const control =
-  "w-full rounded-xl border border-border-strong bg-background px-3 py-2.5 text-base text-foreground placeholder:text-muted";
-
-/** Botón principal en píldora. */
-export const botonPrimario =
-  "inline-flex min-h-11 items-center justify-center gap-2 rounded-full bg-primary px-5 py-2 text-sm font-semibold text-primary-foreground hover:bg-primary-hover disabled:cursor-not-allowed disabled:opacity-60";
-
-/** Botón secundario en píldora. */
-export const botonSecundario =
-  "inline-flex min-h-11 items-center justify-center gap-2 rounded-full bg-surface px-5 py-2 text-sm font-medium text-foreground ring-1 ring-inset ring-border-strong hover:bg-surface-muted";
+// Reexportadas para no romper los imports existentes del panel.
+export { botonPrimario, botonSecundario, control, tarjeta } from "@/components/marca/estilos";
 
 // La prioridad y el estado siempre se comunican con texto; el color y el ícono solo refuerzan.
 const prioridadEstilos: Record<Prioridad, { clase: string; texto: string; icono?: LucideIcon }> = {

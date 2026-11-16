@@ -3,11 +3,9 @@ import Link from "next/link";
 import { ArrowRight, Check, Info } from "lucide-react";
 import { Blob, IconoCirculo } from "@/components/marca/Decor";
 import { lineas } from "@/lib/servicios";
+import { botonPrimario, botonSecundario, tarjeta } from "@/components/marca/estilos";
 
 export const metadata: Metadata = { title: "Servicios" };
-
-const tarjeta =
-  "rounded-3xl bg-surface ring-1 ring-border shadow-[0_1px_2px_rgb(0_0_0/0.04),0_8px_24px_-12px_rgb(76_58_153/0.18)]";
 
 export default function Servicios() {
   return (
@@ -121,14 +119,14 @@ export default function Servicios() {
         <div className="mt-10 flex flex-col gap-3 sm:flex-row sm:items-center">
           <Link
             href="/solicitar/"
-            className="inline-flex min-h-11 items-center justify-center gap-2 rounded-full bg-primary px-6 py-3 font-medium text-primary-foreground hover:bg-primary-hover"
+            className={botonPrimario}
           >
             Solicitar atención
             <ArrowRight aria-hidden className="size-5" strokeWidth={1.75} />
           </Link>
           <Link
             href="/modelo/"
-            className="inline-flex min-h-11 items-center justify-center gap-2 rounded-full bg-surface px-6 py-3 font-medium text-primary ring-1 ring-border-strong hover:bg-primary-soft"
+            className={botonSecundario}
           >
             Conoce nuestro modelo
             <ArrowRight aria-hidden className="size-5" strokeWidth={1.75} />

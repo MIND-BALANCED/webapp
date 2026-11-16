@@ -3,14 +3,9 @@ import Link from "next/link";
 import { ArrowRight, CalendarDays, CircleCheck, ExternalLink, Headphones, LifeBuoy, Lock, Wifi } from "lucide-react";
 import { Blob, IconoCirculo, Rama } from "@/components/marca/Decor";
 import { site } from "@/lib/site";
+import { botonPrimario, tarjeta } from "@/components/marca/estilos";
 
 export const metadata: Metadata = { title: "Agendar cita" };
-
-const tarjeta =
-  "rounded-3xl bg-surface ring-1 ring-border shadow-[0_1px_2px_rgb(0_0_0/0.04),0_8px_24px_-12px_rgb(76_58_153/0.18)]";
-
-const botonPrincipal =
-  "inline-flex min-h-11 items-center justify-center gap-2 rounded-full bg-primary px-6 py-3 font-display font-semibold text-primary-foreground shadow-sm transition-colors hover:bg-primary-hover";
 
 const preparacion = [
   { icono: Lock, texto: "Un espacio privado donde puedas hablar con tranquilidad." },
@@ -76,7 +71,7 @@ export default function Agendar() {
                 <div className="flex flex-col items-center px-6 py-12 text-center sm:px-10 sm:py-16">
                   <IconoCirculo icon={CalendarDays} size="lg" />
                   <p className="mt-5 font-display text-xl font-semibold text-foreground">
-                    La agenda en línea aún no está disponible
+                    La agenda en línea estará disponible pronto
                   </p>
                   <p className="mt-2 max-w-md text-base leading-relaxed text-muted">
                     Estamos terminando de conectarla. Si ya enviaste tu solicitud, nuestro equipo te
@@ -91,14 +86,17 @@ export default function Agendar() {
                       .
                     </p>
                   )}
-                  <Link href="/solicitar/" className={`${botonPrincipal} mt-6`}>
+                  <Link href="/solicitar/" className={`${botonPrimario} mt-6`}>
                     Solicitar atención
                     <ArrowRight aria-hidden className="size-5" strokeWidth={1.75} />
                   </Link>
-                  <p className="mt-6 text-sm text-muted">
-                    Nota para el equipo: configura <code className="rounded bg-surface-muted px-1.5 py-0.5">NEXT_PUBLIC_SCHEDULING_URL</code>{" "}
-                    con el enlace de Cal.com o Calendly.
-                  </p>
+                  {process.env.NODE_ENV !== "production" && (
+                    <p className="mt-6 text-sm text-muted">
+                      Nota para el equipo (solo en desarrollo): configura{" "}
+                      <code className="rounded bg-surface-muted px-1.5 py-0.5">NEXT_PUBLIC_SCHEDULING_URL</code>{" "}
+                      con el enlace de Cal.com o Calendly.
+                    </p>
+                  )}
                 </div>
               )}
             </div>

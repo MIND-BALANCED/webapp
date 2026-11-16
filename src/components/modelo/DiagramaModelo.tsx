@@ -1,5 +1,6 @@
 import { User } from "lucide-react";
 import { IconoCirculo } from "@/components/marca/Decor";
+import { tarjeta } from "@/components/marca/estilos";
 import { miradasModelo } from "@/lib/servicios";
 
 /**
@@ -69,7 +70,7 @@ export function DiagramaModelo() {
 
       <ul className="space-y-4">
         {miradasModelo.map((m) => (
-          <li key={m.id} className="flex items-start gap-4 rounded-3xl bg-surface p-5 shadow-sm ring-1 ring-border">
+          <li key={m.id} className={`${tarjeta} flex items-start gap-4 p-5`}>
             <IconoCirculo icon={m.icono} tone={m.id === "psicosocial" ? "accent" : "primary"} />
             <div>
               <h3 className="font-display text-lg font-semibold">{m.titulo}</h3>

@@ -10,6 +10,8 @@ import {
   CircleCheck,
   Heart,
   Info,
+  LifeBuoy,
+  Phone,
   Send,
   ShieldCheck,
 } from "lucide-react";
@@ -18,17 +20,11 @@ import { crearSolicitud } from "@/lib/demo/store";
 import { lineas } from "@/lib/servicios";
 import { CrisisLines } from "@/components/CrisisLines";
 import { IconoCirculo } from "@/components/marca/Decor";
+import { botonPrimario, control, tarjeta } from "@/components/marca/estilos";
 
 const initial: AdmisionState = { status: "idle" };
 
-const tarjeta =
-  "rounded-3xl bg-surface ring-1 ring-border shadow-[0_1px_2px_rgb(0_0_0/0.04),0_8px_24px_-12px_rgb(76_58_153/0.18)]";
-
-const inputCls =
-  "mt-2 block min-h-11 w-full rounded-xl border border-border-strong bg-surface px-3.5 py-2.5 text-base text-foreground placeholder:text-muted focus:border-primary aria-[invalid=true]:border-2 aria-[invalid=true]:border-danger";
-
-const botonPrincipal =
-  "inline-flex min-h-11 items-center justify-center gap-2 rounded-full bg-primary px-6 py-3 font-display font-semibold text-primary-foreground shadow-sm transition-colors hover:bg-primary-hover";
+const inputCls = `mt-2 ${control}`;
 
 /** Nombre visible de cada campo y el control al que lleva el resumen de errores. */
 const CAMPOS: { name: string; label: string; target: string }[] = [
@@ -54,11 +50,25 @@ const MSG_RADIO = "Selecciona una opción.";
 export function AdmisionForm({ minAge }: { minAge: number }) {
   const [state, setState] = useState<AdmisionState>(initial);
   const resumenRef = useRef<HTMLDivElement>(null);
+  const urgenteRef = useRef<HTMLDivElement>(null);
+  const menorRef = useRef<HTMLDivElement>(null);
 
-  // Al fallar el envío, lleva el foco al resumen de errores para que se anuncie y se pueda recorrer.
+  // Al fallar el envío, lleva el foco a lo más importante: primero la ayuda inmediata (si la persona
+  // indicó riesgo), luego el aviso de edad y, si no, el resumen de errores.
   useEffect(() => {
-    if (state.status === "error") resumenRef.current?.focus();
+    if (state.status !== "error") return;
+    (urgenteRef.current ?? menorRef.current ?? resumenRef.current)?.focus();
   }, [state]);
+
+  /** Lleva al campo con error mostrando su etiqueta o pregunta, y luego enfoca el control. */
+  function irAlCampo(e: React.MouseEvent<HTMLAnchorElement>, target: string) {
+    const control = document.getElementById(target);
+    if (!control) return;
+    e.preventDefault();
+    const contenedor = control.closest<HTMLElement>("[data-campo]") ?? control;
+    contenedor.scrollIntoView({ block: "start" });
+    control.focus({ preventScroll: true });
+  }
 
   function enviar(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -86,6 +96,13 @@ export function AdmisionForm({ minAge }: { minAge: number }) {
   };
   const conError = CAMPOS.filter((c) => err(c.name));
 
+  // Señales de seguridad: se revisan con lo que la persona marcó, aunque el formulario tenga errores.
+  const hayError = state.status === "error";
+  const riesgoInmediato = hayError && (v.riesgoPlan === "si" || v.riesgoViolencia === "si");
+  const riesgoPensamientos = hayError && !riesgoInmediato && v.riesgoPensamientos === "si";
+  const edadNum = v.edad?.trim() ? Number(v.edad) : NaN;
+  const menorDeEdad = hayError && Number.isFinite(edadNum) && edadNum < minAge;
+
   return (
     <form onSubmit={enviar} className="space-y-6" noValidate>
       <div className="flex items-start gap-3 rounded-2xl bg-warning-soft px-4 py-3.5 text-base leading-relaxed text-foreground">
@@ -99,6 +116,94 @@ export function AdmisionForm({ minAge }: { minAge: number }) {
           .
         </p>
       </div>
+
+      {riesgoInmediato && (
+        <div
+          ref={urgenteRef}
+          role="alert"
+          tabIndex={-1}
+          aria-labelledby="ayuda-inmediata-titulo"
+          className="space-y-5 rounded-3xl border-2 border-danger bg-danger-soft p-5 sm:p-6"
+        >
+          <div>
+            <p id="ayuda-inmediata-titulo" className="flex items-center gap-2 font-display text-xl font-bold text-danger">
+              <LifeBuoy aria-hidden className="size-6 shrink-0" strokeWidth={1.75} />
+              Antes de seguir: busca ayuda ahora mismo
+            </p>
+            <p className="mt-2 text-base leading-relaxed text-foreground">
+              Nos contaste que podrías estar en peligro. <strong>No esperes a completar el formulario</strong>:
+              comunícate ya con alguna de estas líneas o acude al servicio de urgencias más cercano.
+            </p>
+          </div>
+          <CrisisLines />
+          <Link
+            href="/ayuda-inmediata/"
+            className="inline-flex min-h-11 items-center gap-1.5 font-semibold text-danger underline underline-offset-4"
+          >
+            Ver todas las rutas de ayuda inmediata
+            <ArrowRight aria-hidden className="size-4" strokeWidth={1.75} />
+          </Link>
+        </div>
+      )}
+
+      {menorDeEdad && (
+        <div
+          ref={menorRef}
+          role="alert"
+          tabIndex={-1}
+          aria-labelledby="menor-titulo"
+          className={`${tarjeta} space-y-5 p-5 sm:p-6`}
+        >
+          <div>
+            <p id="menor-titulo" className="font-display text-xl font-semibold text-foreground">
+              Por ahora atendemos personas de {minAge} años o más
+            </p>
+            <p className="mt-2 text-base leading-relaxed text-foreground">
+              Gracias por buscar apoyo: es un paso valioso. Nuestro servicio todavía no puede acompañar a
+              menores de {minAge} años, pero no tienes que pasar por esto sin ayuda. Puedes hablar con una
+              persona adulta de confianza o con estas líneas, que te orientan de forma gratuita.
+            </p>
+          </div>
+          <a
+            href="tel:141"
+            className="flex min-h-11 items-start gap-4 rounded-3xl border-2 border-primary bg-surface p-5 text-foreground transition-colors hover:bg-primary-soft sm:p-6"
+          >
+            <span aria-hidden className="inline-flex size-12 shrink-0 items-center justify-center rounded-full bg-primary-soft text-primary">
+              <Phone className="size-6" strokeWidth={1.75} />
+            </span>
+            <span className="min-w-0">
+              <span className="block font-display text-3xl font-bold leading-tight text-primary sm:text-4xl">141</span>
+              <span className="mt-1 block text-base font-semibold">Línea 141 del ICBF</span>
+              <span className="mt-1 block text-base leading-relaxed">
+                Orientación gratuita para niñas, niños y adolescentes, las 24 horas.
+              </span>
+              <span className="mt-3 inline-flex items-center gap-1.5 text-sm font-semibold text-primary underline underline-offset-4">
+                Llamar ahora<span className="sr-only"> a la Línea 141</span>
+              </span>
+            </span>
+          </a>
+          {!riesgoInmediato && (
+            <>
+              <p className="text-base font-semibold text-foreground">Si estás en peligro ahora mismo:</p>
+              <CrisisLines />
+            </>
+          )}
+        </div>
+      )}
+
+      {riesgoPensamientos && (
+        <div className="flex items-start gap-3 rounded-2xl border-2 border-danger bg-danger-soft px-4 py-3.5 text-base leading-relaxed text-foreground">
+          <LifeBuoy aria-hidden className="mt-0.5 size-5 shrink-0 text-danger" strokeWidth={1.75} />
+          <p>
+            Nos contaste que has tenido pensamientos de hacerte daño. Mientras completas el formulario,
+            recuerda que puedes hablar con alguien ahora:{" "}
+            <Link href="/ayuda-inmediata/" className="font-semibold text-danger underline underline-offset-2">
+              busca ayuda inmediata
+            </Link>
+            .
+          </p>
+        </div>
+      )}
 
       {state.status === "error" && (
         <div
@@ -116,7 +221,7 @@ export function AdmisionForm({ minAge }: { minAge: number }) {
             <ul className="mt-3 space-y-1 pl-7 text-base">
               {conError.map((c) => (
                 <li key={c.name} className="list-disc">
-                  <a href={`#${c.target}`} className="inline-flex min-h-11 items-center font-semibold underline underline-offset-2 sm:min-h-8">
+                  <a href={`#${c.target}`} onClick={(e) => irAlCampo(e, c.target)} className="inline-flex min-h-11 items-center font-semibold underline underline-offset-2 sm:min-h-8">
                     {c.label}: {err(c.name)}
                   </a>
                 </li>
@@ -276,7 +381,7 @@ export function AdmisionForm({ minAge }: { minAge: number }) {
       </Seccion>
 
       <div className="flex flex-col gap-4 pt-2 sm:flex-row sm:items-center">
-        <button type="submit" className={`${botonPrincipal} w-full sm:w-auto`}>
+        <button type="submit" className={`${botonPrimario} w-full sm:w-auto`}>
           Enviar solicitud
           <Send aria-hidden className="size-5" strokeWidth={1.75} />
         </button>
@@ -383,7 +488,7 @@ function Resultado({ state }: { state: Extract<AdmisionState, { status: "ok" }> 
         </ol>
 
         <div className="mt-8 flex flex-col gap-4 sm:flex-row sm:items-center">
-          <Link href="/agendar/" className={botonPrincipal}>
+          <Link href="/agendar/" className={botonPrimario}>
             Agendar valoración inicial
             <ArrowRight aria-hidden className="size-5" strokeWidth={1.75} />
           </Link>
@@ -445,7 +550,7 @@ function Field({
   const errorId = error ? `${id}-error` : undefined;
   const describedBy = [hintId, errorId].filter(Boolean).join(" ") || undefined;
   return (
-    <div>
+    <div data-campo className="scroll-mt-6">
       <label htmlFor={id} className="block text-base font-medium text-foreground">
         {label}
       </label>
@@ -492,17 +597,11 @@ function Radios({
 }: { name: string; label: string; options: [string, string][]; defaultValue?: string; error?: string }) {
   const errorId = `campo-${name}-error`;
   return (
-    <fieldset className="min-w-0">
-      <legend id={`campo-${name}-pregunta`} className="text-base font-medium leading-relaxed text-foreground">
+    <fieldset data-campo aria-invalid={error ? true : undefined} className="min-w-0 scroll-mt-6">
+      <legend className="text-base font-medium leading-relaxed text-foreground">
         {label}
       </legend>
-      <div
-        role="radiogroup"
-        aria-labelledby={`campo-${name}-pregunta`}
-        aria-describedby={error ? errorId : undefined}
-        aria-invalid={error ? true : undefined}
-        className="mt-3 flex flex-wrap gap-3"
-      >
+      <div className="mt-3 flex flex-wrap gap-3">
         {options.map(([value, text]) => (
           <label key={value} htmlFor={`campo-${name}-${value}`} className={opcionCls}>
             <input
@@ -512,6 +611,7 @@ function Radios({
               value={value}
               required
               defaultChecked={defaultValue === value}
+              aria-describedby={error ? errorId : undefined}
               className="size-5 shrink-0 accent-primary"
             />
             {text}
@@ -529,7 +629,7 @@ function Casilla({
 }: { id: string; name: string; error?: string; defaultChecked?: boolean; children: React.ReactNode }) {
   const errorId = `${id}-error`;
   return (
-    <div>
+    <div data-campo className="scroll-mt-6">
       <div className="group flex items-start gap-3 rounded-2xl border border-border-strong bg-surface p-4 transition-colors has-[:checked]:border-primary has-[:checked]:bg-primary-soft has-[:checked]:ring-2 has-[:checked]:ring-primary">
         <span className="flex size-6 shrink-0 items-center justify-center">
           <input

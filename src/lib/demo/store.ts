@@ -63,6 +63,18 @@ export function useDemoDB(): DemoDB | null {
   return useSyncExternalStore(suscribir, leer, () => null);
 }
 
+/**
+ * Una solicitud urgente sigue "sin atender" mientras nadie haya registrado el
+ * contacto de crisis en la bitácora, sin importar su estado ni su asignación.
+ */
+export function tieneContactoCrisis(db: DemoDB, solicitudId: string): boolean {
+  return db.eventos.some((e) => e.solicitudId === solicitudId && e.tipo === "contacto");
+}
+
+export function urgenteSinAtender(db: DemoDB, s: Solicitud): boolean {
+  return s.prioridad === "urgente" && !tieneContactoCrisis(db, s.id);
+}
+
 export function usuarioActual(db: DemoDB): Profesional | null {
   return db.profesionales.find((p) => p.id === db.sesion && p.activo) ?? null;
 }
@@ -141,6 +153,19 @@ export function agregarNota(id: string, texto: string) {
   const detalle = texto.trim().slice(0, 4000);
   if (!detalle) return;
   conSolicitud(id, (db, s, yo) => reemplazar(db, s, {}, [nuevoEvento(db, { solicitudId: id, autor: yo.id, tipo: "nota", detalle })]));
+}
+
+/**
+ * Registra el contacto con la persona según el protocolo de crisis.
+ * Mismos permisos que una nota; el detalle (resultado del contacto y
+ * valoración del riesgo) es obligatorio.
+ */
+export function registrarContactoCrisis(id: string, detalle: string) {
+  const texto = detalle.trim().slice(0, 4000);
+  if (!texto) throw new Error("Describe el resultado del contacto y la valoración del riesgo.");
+  conSolicitud(id, (db, s, yo) =>
+    reemplazar(db, s, {}, [nuevoEvento(db, { solicitudId: id, autor: yo.id, tipo: "contacto", detalle: texto })]),
+  );
 }
 
 /**

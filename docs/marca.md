@@ -104,6 +104,22 @@ No usar estos textos hasta que existan los servicios correspondientes:
 | Evidencia | Tomamos decisiones basadas en la mejor evidencia científica. |
 | Accesibilidad | Estamos aquí, sin barreras. |
 
+## Componentes de estilo
+
+Las clases repetidas viven en `src/components/marca/estilos.ts`. Impórtalas en lugar de copiar cadenas de Tailwind (el panel puede seguir importándolas desde `src/components/panel/ui.tsx`, que las reexporta).
+
+| Constante | Uso |
+|---|---|
+| `botonPrimario` | Acción principal (botón o enlace): píldora `rounded-full`, `min-h-11`, Montserrat semibold, `bg-primary` con `hover:bg-primary-hover`. |
+| `botonSecundario` | Acción secundaria: misma forma, fondo `surface`, texto `primary` y contorno `border-strong` (≥ 3:1). |
+| `enlaceFlecha` | Enlace de texto con flecha ("Ver más →"), área táctil de 44 px. |
+| `tarjeta` | Tarjeta blanca `rounded-3xl` con contorno `border` y sombra `shadow-card`. |
+| `control` | Inputs, selects y textareas: borde `border-strong`, foco en `primary` y error (`aria-invalid`) en `danger`. |
+
+- La sombra de tarjeta es el token `--shadow-card` de `globals.css` (clase `shadow-card`): violeta muy sutil en claro y neutra en oscuro.
+- Los botones no definen su propio foco: heredan el contorno global de 3 px en `primary`.
+- Para variar tamaño o ancho, añade utilidades de margen o ancho (`mt-6`, `w-full`); no redefinas color, forma ni tipografía.
+
 ## Accesibilidad (obligatorio)
 
 - WCAG 2.1 AA como mínimo, en modo claro y oscuro.

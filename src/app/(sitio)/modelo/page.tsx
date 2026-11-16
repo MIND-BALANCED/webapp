@@ -22,6 +22,7 @@ import {
   Users,
 } from "lucide-react";
 import { Blob, IconoCirculo, Rama } from "@/components/marca/Decor";
+import { botonPrimario, tarjeta } from "@/components/marca/estilos";
 import { DiagramaModelo } from "@/components/modelo/DiagramaModelo";
 import { site } from "@/lib/site";
 
@@ -30,9 +31,6 @@ export const metadata: Metadata = {
   description:
     "Cómo entendemos el bienestar y cómo te acompañamos: el modelo clínico-psicosocial integrado del centro, explicado en lenguaje claro.",
 };
-
-const tarjeta =
-  "rounded-3xl bg-surface ring-1 ring-border shadow-[0_1px_2px_rgb(0_0_0/0.04),0_8px_24px_-12px_rgb(76_58_153/0.18)]";
 
 const dimensiones = [
   {
@@ -423,7 +421,7 @@ export default function ModeloPage() {
               </p>
               <Link
                 href="/solicitar/"
-                className="mt-6 inline-flex min-h-11 items-center gap-2 rounded-full bg-primary px-6 py-3 font-medium text-primary-foreground hover:bg-primary-hover"
+                className={`${botonPrimario} mt-6`}
               >
                 Solicitar atención
                 <ArrowRight aria-hidden className="size-5" strokeWidth={1.75} />
