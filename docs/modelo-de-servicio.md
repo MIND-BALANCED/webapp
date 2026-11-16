@@ -10,6 +10,7 @@ Centro virtual de atención psicológica para jóvenes y adultos. Este documento
 | Videollamadas | Proveedor externo: Google Meet, Zoom o Microsoft Teams. La plataforma no transmite video. |
 | Agenda | Proveedor externo: Cal.com, Calendly o similar, integrado por enlace o iframe (`NEXT_PUBLIC_SCHEDULING_URL`). |
 | Alcance de la plataforma | Recorrido de la persona usuaria, admisión, tamizaje de riesgo, consentimientos, gestión de casos y (más adelante) historia clínica. |
+| Publicación actual | Demostración estática en GitHub Pages, con datos ficticios en el navegador. Sin base de datos conectada. |
 
 ## 2. Líneas de atención
 
@@ -30,9 +31,9 @@ Centro virtual de atención psicológica para jóvenes y adultos. Este documento
 | 01 Descubrimiento | `/`, `/servicios`, `/como-funciona` |
 | 02 Contacto y acogida | `/solicitar`: formulario de admisión |
 | 03 Admisión y valoración inicial | Tamizaje de seguridad → prioridad (`urgente` / `prioritaria` / `regular`) → `/agendar` |
-| 04 Plan de acompañamiento | *Fase 2: panel profesional* |
-| 05 Atención y seguimiento | Videollamada externa. *Fase 3: notas de sesión e instrumentos de seguimiento* |
-| 06 Cierre o remisión | *Fase 2: estados `remitida` y `cerrada`* |
+| 04 Plan de acompañamiento | Panel: asignación de profesional, estados y notas en la bitácora |
+| 05 Atención y seguimiento | Videollamada externa y citas en la ficha. *Fase 3: notas de sesión e instrumentos de seguimiento* |
+| 06 Cierre o remisión | Panel: estados `remitida` y `cerrada` |
 
 ## 5. Tamizaje de seguridad (en la admisión)
 
@@ -66,17 +67,21 @@ Tres preguntas: ideación en las últimas dos semanas, plan o intención actual,
 
 ## 8. Hoja de ruta técnica
 
-**Fase 1 (MVP, esta versión)**
+**Fase 1 (MVP): hecha**
 - Sitio institucional, servicios, recorrido y ayuda inmediata.
 - Formulario de admisión con validación, tamizaje y consentimientos (con versión y fecha).
 - Agenda integrada (Cal.com o Calendly).
-- Tabla `solicitudes` en Supabase con RLS.
 
-**Fase 2: panel profesional**
-- Inicio de sesión del equipo (Supabase Auth con 2FA).
-- Bandeja de solicitudes ordenada por prioridad, asignación de profesional y cambio de estado.
-- Notificación al equipo cuando entra una solicitud urgente (correo o WhatsApp).
-- Webhook de Cal.com o Calendly para vincular las citas con las solicitudes.
+**Fase 2: panel profesional (demostración hecha)**
+- [x] Bandeja de solicitudes por prioridad, con alerta de urgentes sin atender.
+- [x] Roles de coordinación y profesional, con reglas de visibilidad.
+- [x] Asignación, cambio de estado, notas y bitácora automática e inmutable.
+- [x] Registro de citas en la ficha.
+- [x] Esquema de base de datos con RLS, 2FA obligatorio y permisos por columna (diseñado y probado en local).
+- [ ] Conectar Supabase: inicio de sesión real con 2FA y reemplazo del almacén de demostración.
+- [ ] Webhook de Cal.com o Calendly para vincular citas automáticamente (requiere un servidor: Vercel o Supabase Edge Functions).
+- [ ] Notificación al equipo cuando entra una solicitud urgente (correo o WhatsApp).
+- [ ] Gestión del equipo (invitar o desactivar profesionales).
 
 **Fase 3: historia clínica y seguimiento**
 - Historia clínica con cifrado, auditoría de accesos y retención según la norma.
@@ -95,3 +100,4 @@ Tres preguntas: ideación en las últimas dos semanas, plan o intención actual,
 4. Forma jurídica del centro (persona natural o jurídica, habilitación como prestador).
 5. Horarios y tiempos de respuesta comprometidos.
 6. Verificar la vigencia de las líneas de ayuda en `src/lib/site.ts`.
+7. Dónde alojar la versión real: GitHub Pages solo sirve archivos estáticos, así que la base de datos, los webhooks y las alertas necesitarán un backend (por ejemplo Supabase con Edge Functions, o Vercel).

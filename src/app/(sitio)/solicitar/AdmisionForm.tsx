@@ -1,9 +1,9 @@
 "use client";
 
 import Link from "next/link";
-import { useActionState } from "react";
-import { enviarSolicitud } from "./actions";
-import type { AdmisionState } from "@/lib/admision";
+import { useState } from "react";
+import { admisionSchema, clasificarPrioridad, type AdmisionState } from "@/lib/admision";
+import { crearSolicitud } from "@/lib/demo/store";
 import { lineas } from "@/lib/servicios";
 import { CrisisLines } from "@/components/CrisisLines";
 
@@ -13,7 +13,22 @@ const inputCls =
   "mt-1 w-full rounded-xl border border-border bg-surface px-3 py-2.5 text-base focus:border-primary focus:outline-none";
 
 export function AdmisionForm({ minAge }: { minAge: number }) {
-  const [state, action, pending] = useActionState(enviarSolicitud, initial);
+  const [state, setState] = useState<AdmisionState>(initial);
+
+  function enviar(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    const raw = Object.fromEntries([...new FormData(e.currentTarget).entries()].map(([k, v]) => [k, String(v)]));
+    const parsed = admisionSchema.safeParse(raw);
+    if (!parsed.success) {
+      setState({ status: "error", message: "Revisa los campos marcados.", fieldErrors: parsed.error.flatten().fieldErrors, values: raw });
+      window.scrollTo({ top: 0, behavior: "smooth" });
+      return;
+    }
+    const prioridad = clasificarPrioridad(parsed.data);
+    crearSolicitud(parsed.data, prioridad);
+    setState({ status: "ok", prioridad, nombre: parsed.data.nombre.split(" ")[0] });
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }
 
   if (state.status === "ok") return <Resultado state={state} />;
 
@@ -22,7 +37,11 @@ export function AdmisionForm({ minAge }: { minAge: number }) {
     state.status === "error" ? state.fieldErrors[k as keyof typeof state.fieldErrors]?.[0] : undefined;
 
   return (
-    <form action={action} className="space-y-10" noValidate>
+    <form onSubmit={enviar} className="space-y-10" noValidate>
+      <p className="rounded-xl bg-warning-soft p-4 text-sm">
+        <strong>Sitio de demostración.</strong> No escribas datos reales: lo que envíes se guarda
+        solo en este navegador y aparece en el <Link href="/panel" className="underline">panel de demostración</Link>.
+      </p>
       {state.status === "error" && (
         <p role="alert" className="rounded-xl bg-danger-soft p-4 text-danger">
           {state.message}
@@ -125,10 +144,9 @@ export function AdmisionForm({ minAge }: { minAge: number }) {
 
       <button
         type="submit"
-        disabled={pending}
         className="w-full rounded-full bg-primary px-6 py-3.5 font-medium text-primary-foreground hover:opacity-90 disabled:opacity-60 sm:w-auto"
       >
-        {pending ? "Enviando…" : "Enviar solicitud"}
+        Enviar solicitud
       </button>
     </form>
   );
@@ -154,9 +172,8 @@ function Resultado({ state }: { state: Extract<AdmisionState, { status: "ok" }> 
         </div>
         <CrisisLines />
         <p className="text-muted">
-          {state.guardada
-            ? "Recibimos tu solicitud y nuestro equipo te contactará con prioridad. Aun así, no esperes nuestro contacto para buscar ayuda."
-            : "No pudimos registrar tu solicitud en este momento. Por favor busca ayuda en las líneas anteriores."}
+          Recibimos tu solicitud y nuestro equipo te contactará con prioridad. Aun así, no esperes
+          nuestro contacto para buscar ayuda.
         </p>
       </div>
     );
@@ -172,11 +189,10 @@ function Resultado({ state }: { state: Extract<AdmisionState, { status: "ok" }> 
             : "Un profesional revisará tu solicitud y te escribirá en los próximos 2 días hábiles."}{" "}
           Mientras tanto, puedes agendar tu cita de valoración inicial.
         </p>
-        {!state.guardada && (
-          <p className="mt-3 text-sm text-muted">
-            (Modo demostración: la base de datos no está configurada y la solicitud no se guardó.)
-          </p>
-        )}
+        <p className="mt-3 text-sm text-muted">
+          (Demostración: puedes ver esta solicitud en el{" "}
+          <Link href="/panel" className="underline">panel profesional</Link>.)
+        </p>
       </div>
       <Link href="/agendar" className="inline-block rounded-full bg-primary px-6 py-3 font-medium text-primary-foreground hover:opacity-90">
         Agendar valoración inicial

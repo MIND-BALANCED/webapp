@@ -5,7 +5,7 @@ export const respuestaRiesgo = z.enum(["si", "no", "prefiero_no_responder"]);
 
 export const admisionSchema = z.object({
   nombre: z.string().trim().min(2, "Escribe tu nombre.").max(120),
-  email: z.email("Escribe un correo válido.").max(200),
+  email: z.email("Escribe un correo válido.").max(200).transform((e) => e.toLowerCase()),
   telefono: z.string().trim().max(30).optional().default(""),
   edad: z.coerce
     .number({ error: "Escribe tu edad." })
@@ -57,4 +57,4 @@ export function clasificarPrioridad(a: Pick<Admision, "riesgoPensamientos" | "ri
 export type AdmisionState =
   | { status: "idle" }
   | { status: "error"; message: string; fieldErrors: Partial<Record<keyof Admision, string[]>>; values: Record<string, string> }
-  | { status: "ok"; prioridad: Prioridad; nombre: string; guardada: boolean };
+  | { status: "ok"; prioridad: Prioridad; nombre: string };
