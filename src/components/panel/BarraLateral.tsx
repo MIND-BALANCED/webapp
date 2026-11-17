@@ -10,10 +10,8 @@ import { site } from "@/lib/site";
 import { iniciales } from "./ui";
 
 /*
- * Navegación del panel sobre fondo violeta (bg-sidebar).
- * El contorno de foco global usa var(--primary), que sobre este fondo no se
- * vería; dentro de la barra se cambia solo el COLOR DEL CONTORNO (no el token
- * --primary, que también colorea el símbolo y otros elementos de marca).
+ * Navegación del panel sobre fondo lavanda muy claro (bg-sidebar) con texto
+ * violeta (sidebar-foreground). El contorno de foco usa ese mismo color.
  */
 const focoInverso = "[&_:focus-visible]:outline-sidebar-foreground";
 
@@ -37,7 +35,7 @@ function itemsDe(pathname: string): Item[] {
 function Marca() {
   return (
     <span className="flex items-center gap-3">
-      <span className="inline-flex size-11 shrink-0 items-center justify-center rounded-2xl bg-surface">
+      <span className="inline-flex size-11 shrink-0 items-center justify-center rounded-2xl bg-surface ring-1 ring-border">
         <LogoMark className="size-8" />
       </span>
       <span className="flex flex-col leading-tight">
@@ -138,7 +136,7 @@ export function BarraLateral({ yo, pathname, onSalir }: { yo: Profesional; pathn
   return (
     <>
       {/* Escritorio */}
-      <aside className="hidden w-72 shrink-0 bg-sidebar lg:block">
+      <aside className="hidden w-72 shrink-0 border-r border-border bg-sidebar lg:block">
         <div className="sticky top-0 flex max-h-screen min-h-screen flex-col gap-8 overflow-y-auto px-5 py-7">
           <div>
             <Marca />
@@ -155,7 +153,7 @@ export function BarraLateral({ yo, pathname, onSalir }: { yo: Profesional; pathn
       </aside>
 
       {/* Móvil */}
-      <header className="bg-sidebar lg:hidden">
+      <header className="border-b border-border bg-sidebar lg:hidden">
         <div className="flex items-center justify-between gap-3 px-4 py-3">
           <Marca />
           <span className={focoInverso}>

@@ -2,14 +2,16 @@
 
 /*
  * Sistema de marca Mind Balanced (ver docs/marca.md).
- * Todos los pares de texto cumplen WCAG AA (la mayoría AAA) en claro y oscuro.
+ * Solo modo claro. Fondos muy claros; todos los pares de texto cumplen
+ * WCAG AA (la mayoría AAA).
  * --secondary y --accent son DECORATIVOS: no usarlos para texto ni para
  * bordes de controles. Para texto verde usar --accent-ink.
  */
 :root {
-  --background: #fcfbff;
+  color-scheme: light;
+  --background: #ffffff;
   --surface: #ffffff;
-  --surface-muted: #f3f0fb;
+  --surface-muted: #faf8fe;
   --foreground: #1f1b3d;
   --muted: #57537a;
   --border: #ddd7f0;
@@ -18,58 +20,24 @@
   --primary: #4c3a99;
   --primary-hover: #3d2e80;
   --primary-foreground: #ffffff;
-  --primary-soft: #ece7fa;
+  --primary-soft: #f4f1fd;
 
   --secondary: #b7a6e6; /* lavanda: decorativo */
-  --secondary-soft: #f3f0fb;
+  --secondary-soft: #faf8fe;
 
   --accent: #4fa88b; /* verde: decorativo */
   --accent-ink: #23705a; /* verde para texto */
-  --accent-soft: #e3f3ec;
+  --accent-soft: #f0f9f5;
 
   --danger: #b3261e;
-  --danger-soft: #fcebea;
-  --warning-soft: #fff3d6;
+  --danger-soft: #fef4f3;
+  --warning-soft: #fff9eb;
 
-  --sidebar: #4c3a99; /* navegación lateral de la plataforma */
-  --sidebar-foreground: #ffffff;
+  --sidebar: #f8f6fe; /* navegación lateral de la plataforma: clara */
+  --sidebar-foreground: #4c3a99;
 
   /* Sombra de tarjeta: sutil, con un leve tinte del violeta principal. */
   --shadow-card: 0 1px 2px rgb(0 0 0 / 0.04), 0 8px 24px -12px rgb(76 58 153 / 0.18);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #14122a;
-    --surface: #1d1a36;
-    --surface-muted: #262249;
-    --foreground: #eeecf8;
-    --muted: #b3aed0;
-    --border: #39345e;
-    --border-strong: #756f9c;
-
-    --primary: #bba9f2;
-    --primary-hover: #cdbff6;
-    --primary-foreground: #1a1533;
-    --primary-soft: #2e2758;
-
-    --secondary: #6f5fb8;
-    --secondary-soft: #231f45;
-
-    --accent: #4fa88b;
-    --accent-ink: #82d3b7;
-    --accent-soft: #183a31;
-
-    --danger: #f2a49c;
-    --danger-soft: #3b1f25;
-    --warning-soft: #3a3020;
-
-    --sidebar: #2a2352;
-    --sidebar-foreground: #eeecf8;
-
-    /* En oscuro, sombra neutra: el tinte violeta se vería como un halo. */
-    --shadow-card: 0 1px 2px rgb(0 0 0 / 0.3), 0 8px 24px -12px rgb(0 0 0 / 0.5);
-  }
 }
 
 @theme inline {

@@ -16,33 +16,39 @@
 
 Los tokens están en `src/app/globals.css`. Úsalos siempre a través de las clases de Tailwind (`bg-primary`, `text-muted`…), nunca con valores hexadecimales sueltos.
 
-| Rol | Token | Claro | Oscuro | Uso |
-|---|---|---|---|---|
-| Principal | `primary` | `#4C3A99` | `#BBA9F2` | Botones, enlaces, títulos de marca, foco. Transmite confianza y profesionalismo. |
-| Principal suave | `primary-soft` | `#ECE7FA` | `#2E2758` | Fondos de íconos, estados seleccionados, tarjetas destacadas. |
-| Secundario (lavanda) | `secondary` | `#B7A6E6` | `#6F5FB8` | **Solo decorativo**: formas, ilustración y símbolo. Transmite calma. |
-| Acento (verde) | `accent` | `#4FA88B` | `#4FA88B` | **Solo decorativo**: hojas, detalles y símbolo. Transmite esperanza y bienestar. |
-| Acento para texto | `accent-ink` | `#23705A` | `#82D3B7` | Texto o íconos verdes que deben leerse. |
-| Neutro | `surface-muted` / `secondary-soft` | `#F3F0FB` | `#262249` | Secciones y paneles. Transmite claridad y espacio. |
-| Texto | `foreground` | `#1F1B3D` | `#EEECF8` | Texto principal. |
-| Texto secundario | `muted` | `#57537A` | `#B3AED0` | Descripciones y metadatos. |
-| Borde de control | `border-strong` | `#8A83B0` | `#756F9C` | Bordes de inputs, selects y checkboxes (≥ 3:1). |
-| Borde decorativo | `border` | `#DDD7F0` | `#39345E` | Separadores y contornos de tarjetas (no cumple 3:1; no usar para controles). |
-| Navegación lateral | `sidebar` / `sidebar-foreground` | `#4C3A99` / `#FFFFFF` | `#2A2352` / `#EEECF8` | Barra lateral de la plataforma (8.9:1 y 12.3:1). En oscuro es violeta profundo, no lavanda claro, para no deslumbrar. |
-| Peligro | `danger` / `danger-soft` | `#B3261E` / `#FCEBEA` | `#F2A49C` / `#3B1F25` | Riesgo, crisis y errores. **Reservado**: no se usa como decoración. |
+**Solo modo claro.** El sitio y la plataforma no tienen modo oscuro (`color-scheme: light`). Los fondos son muy claros (blanco y lavanda casi blanco), y el color de marca vive en botones, íconos, títulos y detalles.
+
+| Rol | Token | Valor | Uso |
+|---|---|---|---|
+| Fondo | `background` / `surface` | `#FFFFFF` | Fondo general y tarjetas. |
+| Neutro | `surface-muted` / `secondary-soft` | `#FAF8FE` | Secciones alternas y paneles. Transmite claridad y espacio. |
+| Principal | `primary` | `#4C3A99` | Botones, enlaces, títulos de marca y foco. Transmite confianza y profesionalismo. |
+| Principal suave | `primary-soft` | `#F4F1FD` | Fondos de íconos, estados seleccionados y tarjetas destacadas. |
+| Secundario (lavanda) | `secondary` | `#B7A6E6` | **Solo decorativo**: formas, ilustración y símbolo. Transmite calma. |
+| Acento (verde) | `accent` | `#4FA88B` | **Solo decorativo**: hojas, detalles y símbolo. Transmite esperanza y bienestar. |
+| Acento para texto | `accent-ink` / `accent-soft` | `#23705A` / `#F0F9F5` | Texto o íconos verdes que deben leerse, y su fondo suave. |
+| Texto | `foreground` | `#1F1B3D` | Texto principal. |
+| Texto secundario | `muted` | `#57537A` | Descripciones y metadatos. |
+| Borde de control | `border-strong` | `#8A83B0` | Bordes de inputs, selects y checkboxes (≥ 3:1). |
+| Borde decorativo | `border` | `#DDD7F0` | Separadores y contornos de tarjetas (no cumple 3:1; no usar para controles). |
+| Navegación lateral | `sidebar` / `sidebar-foreground` | `#F8F6FE` / `#4C3A99` | Barra lateral clara de la plataforma, con texto violeta y borde a la derecha. |
+| Aviso | `warning-soft` | `#FFF9EB` | Avisos de demostración y prioridad "prioritaria". |
+| Peligro | `danger` / `danger-soft` | `#B3261E` / `#FEF4F3` | Riesgo, crisis y errores. **Reservado**: no se usa como decoración. |
 
 ### Contraste verificado (WCAG 2.1)
 
-| Par | Claro | Oscuro |
-|---|---|---|
-| Texto sobre fondo | 15.9 | 15.7 |
-| Texto secundario sobre fondo | 7.0 | 8.6 |
-| Texto secundario sobre neutro | 6.4 | 7.0 |
-| Principal sobre fondo | 8.6 | 8.8 |
-| Texto de botón sobre principal | 8.9 | 8.4 |
-| Acento para texto sobre blanco | 5.9 | 9.5 |
-| Peligro sobre peligro suave | 5.7 | 7.5 |
-| Borde de control sobre blanco | 3.5 | 3.6 |
+| Par | Contraste |
+|---|---|
+| Texto sobre fondo | 16.4 |
+| Texto secundario sobre fondo | 7.2 |
+| Texto secundario sobre neutro | 6.8 |
+| Principal sobre fondo | 8.9 |
+| Principal sobre principal suave | 7.9 |
+| Principal sobre barra lateral | 8.3 |
+| Texto de botón sobre principal | 8.9 |
+| Acento para texto sobre su fondo suave | 5.5 |
+| Peligro sobre peligro suave | 6.1 |
+| Borde de control sobre neutro | 3.4 |
 
 El verde (`#4FA88B`, 2.9:1) y el lavanda (`#B7A6E6`, 2.2:1) **no** llegan a 3:1 sobre blanco: nunca deben llevar texto ni marcar límites de controles.
 
@@ -64,7 +70,7 @@ El verde (`#4FA88B`, 2.9:1) y el lavanda (`#B7A6E6`, 2.2:1) **no** llegan a 3:1 
 - **Símbolo:** un corazón formado por dos hojas (verde de crecimiento y lavanda de calma) que una figura humana violeta rodea y sostiene.
 - **Logotipo:** el símbolo, el nombre en Montserrat Bold y el descriptor debajo.
 - **Versiones:** completa (`<Logo />`), compacta sin descriptor (`<Logo compact />`) e inversa sobre violeta (`<Logo inverse />`).
-- Se adapta solo al modo oscuro. Funciona desde 24 px.
+- Funciona desde 24 px.
 
 ## Iconografía
 
@@ -116,13 +122,13 @@ Las clases repetidas viven en `src/components/marca/estilos.ts`. Impórtalas en 
 | `tarjeta` | Tarjeta blanca `rounded-3xl` con contorno `border` y sombra `shadow-card`. |
 | `control` | Inputs, selects y textareas: borde `border-strong`, foco en `primary` y error (`aria-invalid`) en `danger`. |
 
-- La sombra de tarjeta es el token `--shadow-card` de `globals.css` (clase `shadow-card`): violeta muy sutil en claro y neutra en oscuro.
+- La sombra de tarjeta es el token `--shadow-card` de `globals.css` (clase `shadow-card`): con un tinte violeta muy sutil.
 - Los botones no definen su propio foco: heredan el contorno global de 3 px en `primary`.
 - Para variar tamaño o ancho, añade utilidades de margen o ancho (`mt-6`, `w-full`); no redefinas color, forma ni tipografía.
 
 ## Accesibilidad (obligatorio)
 
-- WCAG 2.1 AA como mínimo, en modo claro y oscuro.
+- WCAG 2.1 AA como mínimo (solo modo claro).
 - Foco visible en todos los elementos interactivos (contorno de 3 px en `primary`).
 - Áreas táctiles de 44 × 44 px como mínimo en móvil.
 - Respeta `prefers-reduced-motion`.
