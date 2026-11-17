@@ -9,6 +9,7 @@ import { botonPrimario } from "@/components/marca/estilos";
 const nav = [
   { href: "/servicios/", label: "Servicios" },
   { href: "/modelo/", label: "Nuestro modelo" },
+  { href: "/equipo/", label: "Equipo" },
   { href: "/como-funciona/", label: "Cómo funciona" },
   { href: "/ayuda-inmediata/", label: "Ayuda inmediata", crisis: true },
 ];
@@ -55,8 +56,8 @@ export function NavSitio() {
 
   return (
     <>
-      <nav aria-label="Principal" className="hidden items-center gap-1 lg:flex">
-        <ul className="flex items-center gap-1">
+      <nav aria-label="Principal" className="hidden items-center gap-1 xl:flex">
+        <ul className="flex items-center gap-0.5">
           {nav.map((n) => {
             const actual = esActual(pathname, n.href);
             return (
@@ -64,7 +65,7 @@ export function NavSitio() {
                 <Link
                   href={n.href}
                   aria-current={actual ? "page" : undefined}
-                  className={`inline-flex min-h-11 items-center gap-1.5 rounded-full px-3.5 text-[0.95rem] font-medium transition-colors ${
+                  className={`inline-flex min-h-11 items-center gap-1.5 whitespace-nowrap rounded-full px-3 text-[0.95rem] font-medium transition-colors ${
                     actual
                       ? "bg-primary-soft text-primary underline decoration-2 underline-offset-[6px]"
                       : n.crisis
@@ -82,7 +83,7 @@ export function NavSitio() {
         <Link
           href="/solicitar/"
           aria-current={solicitarActual ? "page" : undefined}
-          className="ml-3 inline-flex min-h-11 items-center gap-2 rounded-full bg-primary px-5 font-display text-sm font-semibold text-primary-foreground shadow-sm transition-colors hover:bg-primary-hover"
+          className="ml-3 inline-flex min-h-11 items-center gap-2 whitespace-nowrap rounded-full bg-primary px-5 font-display text-sm font-semibold text-primary-foreground shadow-sm transition-colors hover:bg-primary-hover"
         >
           Solicitar atención
           <ArrowRight aria-hidden className="size-4" strokeWidth={2} />
@@ -95,7 +96,7 @@ export function NavSitio() {
         aria-expanded={abierto}
         aria-controls="menu-movil"
         onClick={() => setAbierto((a) => !a)}
-        className="inline-flex min-h-11 min-w-11 items-center justify-center gap-2 rounded-full px-3 font-medium text-primary ring-1 ring-border-strong hover:bg-surface-muted lg:hidden"
+        className="inline-flex min-h-11 min-w-11 items-center justify-center gap-2 rounded-full px-3 font-medium text-primary ring-1 ring-border-strong hover:bg-surface-muted xl:hidden"
       >
         {abierto ? (
           <X aria-hidden className="size-5" strokeWidth={1.75} />
@@ -108,7 +109,7 @@ export function NavSitio() {
       <div
         id="menu-movil"
         hidden={!abierto}
-        className="absolute inset-x-0 top-full z-40 border-b border-border bg-surface shadow-card lg:hidden"
+        className="absolute inset-x-0 top-full z-40 border-b border-border bg-surface shadow-card xl:hidden"
       >
         <nav aria-label="Principal (móvil)" className="mx-auto max-w-6xl px-4 py-4">
           <ul className="flex flex-col gap-1">

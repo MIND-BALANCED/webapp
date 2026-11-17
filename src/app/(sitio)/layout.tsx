@@ -15,6 +15,7 @@ const beneficios: { titulo: string; texto: string; icono: LucideIcon; tono: "pri
 const enlacesPie = [
   { href: "/servicios/", label: "Servicios" },
   { href: "/modelo/", label: "Nuestro modelo" },
+  { href: "/equipo/", label: "Equipo" },
   { href: "/como-funciona/", label: "Cómo funciona" },
   { href: "/solicitar/", label: "Solicitar atención" },
 ];

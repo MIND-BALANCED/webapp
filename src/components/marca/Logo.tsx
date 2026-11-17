@@ -30,7 +30,7 @@ export function Logo({ compact = false, inverse = false }: { compact?: boolean; 
           {site.name}
         </span>
         {!compact && (
-          <span className={`mt-1 text-xs font-medium ${inverse ? "text-white/85" : "text-muted"}`}>
+          <span className={`mt-1 whitespace-nowrap text-xs font-medium ${inverse ? "text-white/85" : "text-muted"}`}>
             {site.descriptor}
           </span>
         )}
